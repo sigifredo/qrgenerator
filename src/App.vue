@@ -5,21 +5,32 @@
             <input type="text" v-model="value2generate" placeholder="URL or Text to generate" />
             <button @click="generate">Generate</button>
             <p v-if="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</p>
+            <div class="qr-image">
+                <img v-if="qrCodeDataURL" :src="qrCodeDataURL" alt="Código QR" />
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import QRCode from 'qrcode';
 
 const errorMessage = ref('');
+const qrCodeDataURL = ref('');
 const value2generate = ref('');
 
 const generate = () => {
     if (value2generate.value.trim() === '') {
-        errorMessage.value = `El campo de texto no puede estar vacío.`;
+        errorMessage.value = 'El campo de texto no puede estar vacío.';
     } else {
-        // generar QR
+        QRCode.toDataURL(value2generate.value)
+            .then(url => {
+                qrCodeDataURL.value = url;
+            })
+            .catch(err => {
+                errorMessage.value = err;
+            });
     }
 };
 </script>
