@@ -7,6 +7,7 @@
             <p v-if="errorMessage" class="alert alert-danger" role="alert">{{ errorMessage }}</p>
             <div class="qr-image">
                 <img v-if="qrCodeDataURL" :src="qrCodeDataURL" alt="Código QR" />
+                <a download="qr_code.png" :href="qrCodeDataURL">Descargar</a>
             </div>
         </div>
     </div>
@@ -24,7 +25,7 @@ const generate = () => {
     if (value2generate.value.trim() === '') {
         errorMessage.value = 'El campo de texto no puede estar vacío.';
     } else {
-        QRCode.toDataURL(value2generate.value)
+        QRCode.toDataURL(value2generate.value, { width: 700, margon: 0 })
             .then(url => {
                 qrCodeDataURL.value = url;
             })
@@ -91,5 +92,11 @@ input {
     display: flex;
     flex-direction: column;
     gap: 1em;
+}
+.qr-image {
+    & > img {
+        border-radius: 1em;
+        box-shadow: 0 0 1em rgba(0, 0, 0, 0.3);
+    }
 }
 </style>
