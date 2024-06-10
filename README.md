@@ -1,4 +1,4 @@
-# qr
+# QR Generator
 
 ## Project setup
 ```
